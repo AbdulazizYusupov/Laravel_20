@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
+    // dd(123);
 })->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::middleware('auth')->group(function () {
+    Route::middleware('role')->group(function () {
         Route::get('/category', [CategoryController::class, 'index']);
         Route::get('/category/{category}', [CategoryController::class, 'show']);
 
@@ -39,4 +40,4 @@ Route::delete('/news/{post}', [NewsController::class, 'delete']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

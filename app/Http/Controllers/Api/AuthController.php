@@ -20,7 +20,7 @@ class AuthController extends Controller
         Auth::attempt($request->only('email', 'password'));
 
         if (Auth::check()) {
-            $token = Auth::user()->createToken('auth_token')->plainTextToken;
+            $token = Auth::user()->createToken('Token')->plainTextToken;
 
             return response()->json([
                 'success' => true,
@@ -28,9 +28,9 @@ class AuthController extends Controller
                 'token' => $token,
             ], 200);
         }
-        return response()->json([   
-           'success' => false,
-           'message' => 'Unauthorized'
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthorized'
         ]);
     }
 
@@ -49,12 +49,29 @@ class AuthController extends Controller
             'role' => $request->role ?? 'user',
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('Token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'data' => $user,
             'token' => $token
+        ], 200);
+    }
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $user->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout successfully'
         ], 200);
     }
 }
