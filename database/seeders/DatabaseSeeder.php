@@ -183,13 +183,13 @@ class DatabaseSeeder extends Seeder
         //     ]);
         // }
 
-        // for ($i = 0; $i < 10; $i++) {
-        //     Product::create([
-        //         'category_id' => rand(1, 10),
-        //         'name' => 'Product ' . $i,
-        //         'description' => 'Description ' . $i,
-        //     ]);
-        // }
+        for ($i = 0; $i < 10; $i++) {
+            Product::create([
+                'category_id' => rand(1, 6),
+                'name' => 'Product ' . $i,
+                'description' => 'Description ' . $i,
+            ]);
+        }
 
         // for ($i = 0; $i < 20; $i++) {
         //     Element::create([
