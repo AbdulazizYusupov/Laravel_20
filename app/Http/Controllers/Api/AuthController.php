@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendEmail;
+use App\Models\Check;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +52,15 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('Token')->plainTextToken;
+
+        $rand = rand(10000, 99999);
+
+        Check::create([
+            'user_id' => $user->id,
+            'value' => $rand
+        ]);
+
+        SendEmail::dispatch($user->email, $rand);
 
         return response()->json([
             'success' => true,
