@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schedule;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -47,9 +48,14 @@ Route::get('/task', [TaskController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    Route::post('/check', [AuthController::class, 'check']);
+
     Route::post('/task', [TaskController::class, 'store'])->middleware('role');
 
     Route::middleware('check')->group(function () {
         Route::post('/comment', [CommentController::class, 'store']);
     });
 });
+
+Schedule::command(\App\Console\Commands\Check::class)->everyFiveSeconds();
+// \Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\Check::class)->everyFiveSeconds();

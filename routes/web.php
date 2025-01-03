@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\Check;
 use App\Livewire\LoginComponent;
 use App\Livewire\ProductComponent;
 use App\Livewire\RegisterComponent;
@@ -18,3 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+\Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\Check::class)->everyFiveSeconds();

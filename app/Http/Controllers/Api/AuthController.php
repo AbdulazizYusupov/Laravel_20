@@ -85,4 +85,19 @@ class AuthController extends Controller
             'message' => 'Logout successfully'
         ], 200);
     }
+    public function check(Request $request)
+    {
+        $user = auth('sanctum')->user();
+        if ($request->data != $user->checks->last()->value) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+        User::where('id', $user->id)->update(['email_verified_at' => now()]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Check successfully'
+        ], 200);
+    }
 }
